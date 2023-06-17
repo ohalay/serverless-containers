@@ -24,7 +24,7 @@ public class LambdaHandlerTest : IClassFixture<LocalStackFixture>
         var client = new AmazonS3Client(new AmazonS3Config { ServiceURL = fixture.Container.GetConnectionString() });
 
         var sut = new LambdaHandler(collection => collection
-          .AddLogging(b => b.AddXUnit())
+          .AddLogging(b => b.AddXUnit(outputHelper))
           .AddSingleton<IAmazonS3>(client)
           .PostConfigure<Config>(c => c.BucketName = LocalStackFixture.BUCKETNAME));
 
