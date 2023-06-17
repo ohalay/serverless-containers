@@ -2,15 +2,21 @@ using Amazon.Lambda.TestUtilities;
 using Amazon.S3;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
+using Xunit.Abstractions;
 
 namespace Serverless.Lambda.Test;
 
 public class LambdaHandlerTest : IClassFixture<LocalStackFixture>
 {
     private readonly LocalStackFixture fixture;
+    private readonly ITestOutputHelper outputHelper;
 
-    public LambdaHandlerTest(LocalStackFixture localStackFixture)
-        => fixture = localStackFixture;
+    public LambdaHandlerTest(LocalStackFixture localStackFixture, ITestOutputHelper outputHelper)
+    {
+        fixture = localStackFixture;
+        this.outputHelper = outputHelper;
+    }
 
     [Fact]
     public async Task HandleShoudPutDocToS3Test()
@@ -18,6 +24,7 @@ public class LambdaHandlerTest : IClassFixture<LocalStackFixture>
         var client = new AmazonS3Client(new AmazonS3Config { ServiceURL = fixture.Container.GetConnectionString() });
 
         var sut = new LambdaHandler(collection => collection
+          .AddLogging(b => b.AddXUnit())
           .AddSingleton<IAmazonS3>(client)
           .PostConfigure<Config>(c => c.BucketName = LocalStackFixture.BUCKETNAME));
 

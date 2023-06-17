@@ -34,7 +34,7 @@ public class Executor : IExecutor
 
         await Save(ctx.AwsRequestId, stream);
 
-        logger.LogInformation("File saved.");
+        logger.LogInformation("File '{FileName} 'saved", ctx.AwsRequestId);
     }
 
     private async Task Save(string key, Stream stream)

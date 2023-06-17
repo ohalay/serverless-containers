@@ -9,10 +9,10 @@
 		<PublishReadyToRun>true</PublishReadyToRun>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Amazon.Lambda.RuntimeSupport" Version="1.8.6" />
+		<PackageReference Include="Amazon.Lambda.RuntimeSupport" Version="1.8.8" />
 		<PackageReference Include="Amazon.Lambda.Core" Version="2.1.0" />
 		<PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.3.1" />
-		<PackageReference Include="AWSSDK.S3" Version="3.7.104" />
+		<PackageReference Include="AWSSDK.S3" Version="3.7.106" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="7.0.0" />
 		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="7.0.0" />

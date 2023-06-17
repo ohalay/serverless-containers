@@ -4,7 +4,6 @@ using Amazon.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Logging.Console;
 
 [assembly: LambdaSerializer(typeof(DefaultLambdaJsonSerializer))]
 namespace Serverless.Lambda;
@@ -22,8 +21,11 @@ public class LambdaHandler
     public async Task Handle(ILambdaContext context)
     {
         await using var scope = _serviceProvider.CreateAsyncScope();
-        var executor = scope.ServiceProvider.GetRequiredService<IExecutor>();
 
+        var logger = scope.ServiceProvider.GetRequiredService<ILogger<LambdaHandler>>();
+        using var _ = logger.BeginScope(new Dictionary<string, object> { ["RequestId"] = context.AwsRequestId });
+
+        var executor = scope.ServiceProvider.GetRequiredService<IExecutor>();
         await executor.Execute(context);
     }
 
@@ -33,7 +35,7 @@ public class LambdaHandler
 
         var seriveCollection = new ServiceCollection()
             .Configure<Config>(options => configuration.Bind(options))
-            .AddLogging(opt => opt.AddSimpleConsole(c => c.ColorBehavior = LoggerColorBehavior.Disabled))
+            .AddLogging(opt => opt.AddJsonConsole(c => c.IncludeScopes = true))
             .AddTransient<IExecutor, Executor>()
             .AddSingleton<IAmazonS3>(_ => new AmazonS3Client());
 
