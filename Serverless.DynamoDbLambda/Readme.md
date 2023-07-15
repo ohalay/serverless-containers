@@ -58,6 +58,6 @@ If already installed check if new version is available.
 
 Deploy function to AWS Lambda
 ```
-    cd "Serverless.Lambda"
+    cd "Serverless.DynamoDbLambda"
     dotnet lambda deploy-function
 ```
