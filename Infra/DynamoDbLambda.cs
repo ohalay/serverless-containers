@@ -39,7 +39,7 @@ public class DynamoDbLambda : Stack
         {
             Runtime = Runtime.DOTNET_6,
             MemorySize = 256,
-            Handler = "FunctionOne",
+            Handler = "Serverless.DynamoDbLambda::Serverless.DynamoDbLambda.LambdaHandler::Handle",
             Code = Code.FromAsset("Serverless.DynamoDbLambda/", new Amazon.CDK.AWS.S3.Assets.AssetOptions
             {
                 Bundling = buildOption

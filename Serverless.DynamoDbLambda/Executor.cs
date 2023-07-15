@@ -1,3 +1,4 @@
+using System.IO;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using static Amazon.Lambda.DynamoDBEvents.DynamoDBEvent;
@@ -14,10 +15,15 @@ internal class Executor : IExecutor
     public Executor(ILogger<Executor> logger)
         => this.logger = logger;
 
-    public Task Execute(DynamodbStreamRecord request)
+    public async Task Execute(DynamodbStreamRecord request)
     {
         logger.LogInformation("Handler executed... {EventId}", request.EventID);
 
-        return Task.CompletedTask;
+        if (request.Dynamodb.Keys["Sk"].S == "F")
+        {
+            throw new InvalidDataException();
+        }
+
+        await Task.CompletedTask;
     }
 }
